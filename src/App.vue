@@ -4,9 +4,7 @@
 
     <Header />
 
-    <v-content>
-      <router-view></router-view>
-    </v-content>
+    <Content />
 
     <Login />
 
@@ -15,13 +13,14 @@
 </template>
 
 <script>
-import Login from './components/Login'
 import Menu from './components/Menu'
-import Footer from './components/Footer'
 import Header from './components/Header'
+import Content from './components/Content'
+import Login from './components/Login'
+import Footer from './components/Footer'
 
 export default {
-  components: { Login, Menu, Footer, Header },
+  components: { Login, Menu, Footer, Header, Content },
   props: {},
   data: () => ({}),
   created() {

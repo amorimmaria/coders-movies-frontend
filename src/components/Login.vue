@@ -36,7 +36,7 @@
 <script>
 export default {
   data: () => ({
-    dialog: true,
+    dialog: false,
   }),
 }
 </script>

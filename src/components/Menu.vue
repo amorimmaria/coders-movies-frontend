@@ -1,12 +1,7 @@
 <template>
   <v-navigation-drawer v-model="drawer" app clipped>
     <v-list dense>
-      <v-list-item
-        v-for="item in itemsAvatar"
-        :key="item.text"
-        link
-        @click="navToLogin()"
-      >
+      <v-list-item v-for="item in itemsAvatar" :key="item.text" link to="/">
         <v-list-item-avatar>
           <img
             :src="`https://randomuser.me/api/portraits/men/${item.picture}.jpg`"
@@ -15,7 +10,12 @@
         </v-list-item-avatar>
         <v-list-item-title v-text="item.text" />
       </v-list-item>
-      <v-list-item v-for="item in itemsMenu" :key="item.text" link>
+      <v-list-item
+        v-for="item in itemsMenu"
+        :key="item.text"
+        link
+        :to="item.to"
+      >
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
@@ -33,7 +33,7 @@
 export default {
   data: () => ({
     itemsMenu: [
-      { icon: 'mdi-trending-up', text: 'Most Popular' },
+      { icon: 'mdi-trending-up', text: 'Most Popular', to: '/config' },
       { icon: 'mdi-youtube-subscription', text: 'Subscriptions' },
       { icon: 'mdi-history', text: 'History' },
       { icon: 'mdi-playlist-play', text: 'Playlists' },
@@ -41,8 +41,6 @@ export default {
     ],
     itemsAvatar: [{ picture: 28, text: 'Joseph' }],
   }),
-  methods: {
-    navToLogin() {},
-  },
+  methods: {},
 }
 </script>
