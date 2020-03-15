@@ -1,6 +1,6 @@
 <template>
   <v-app-bar app clipped-left color="red" dense>
-    <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+    <v-app-bar-nav-icon @click.stop="setDrawer()" />
     <v-icon class="mx-4" large>
       mdi-youtube
     </v-icon>
@@ -20,3 +20,15 @@
     </v-row>
   </v-app-bar>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+export default {
+  computed: mapState(['drawer']),
+  methods: {
+    setDrawer() {
+      this.$store.commit('setDrawer', !this.drawer)
+    },
+  },
+}
+</script>
