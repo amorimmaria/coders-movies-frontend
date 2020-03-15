@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer :value="drawer" app clipped>
+  <v-navigation-drawer :value="drawer" app clipped color="#232323">
     <v-list dense>
       <v-list-item @click="activeLogin()">
         <v-list-item-avatar>
@@ -59,7 +59,7 @@
 
     <template v-if="credentials" v-slot:append>
       <div class="pa-2">
-        <v-btn block @click="logout()">Sair</v-btn>
+        <v-btn block color="#55aedf" @click="logout()">Sair</v-btn>
       </div>
     </template>
   </v-navigation-drawer>

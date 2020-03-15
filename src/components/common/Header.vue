@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app clipped-left color="red" dense>
+  <v-app-bar app clipped-left color="#e31e1e" dense>
     <v-app-bar-nav-icon @click.stop="setDrawer()" />
     <v-icon class="mx-4" large>
       mdi-youtube
