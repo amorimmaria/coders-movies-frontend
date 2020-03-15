@@ -36,9 +36,28 @@
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item
+        v-if="
+          credentials &&
+            credentials.user &&
+            credentials.user.user_type === 'admin'
+        "
+        link
+        to="adm-options"
+      >
+        <v-list-item-action>
+          <v-icon>mdi-cog</v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title>
+            Opções de Administrador
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
     </v-list>
 
-    <template v-slot:append>
+    <template v-if="credentials" v-slot:append>
       <div class="pa-2">
         <v-btn block @click="logout()">Sair</v-btn>
       </div>
@@ -65,7 +84,7 @@ export default {
   computed: mapState(['drawer', 'credentials']),
   methods: {
     activeLogin() {
-      this.$store.commit('setLoginDialog', true)
+      this.$store.commit('setAuthDialog', true)
     },
     logout() {
       this.$store.commit('setCredentials', null)

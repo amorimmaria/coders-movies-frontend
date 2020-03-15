@@ -6,7 +6,7 @@
 
     <Content />
 
-    <Login />
+    <Auth />
 
     <Footer />
 
@@ -18,12 +18,12 @@
 import Menu from './components/common/Menu'
 import Header from './components/common/Header'
 import Content from './components/common/Content'
-import Login from './components/common/Login'
+import Auth from './pages/Auth'
 import Footer from './components/common/Footer'
 import SnackbarStore from './components/common/SnackbarStore'
 
 export default {
-  components: { Login, Menu, Footer, Header, Content, SnackbarStore },
+  components: { Auth, Menu, Footer, Header, Content, SnackbarStore },
   props: {},
   data: () => ({}),
   created() {

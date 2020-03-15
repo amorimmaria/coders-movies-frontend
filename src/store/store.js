@@ -6,8 +6,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     credentials: null,
-    loginDialog: false,
+    authDialog: false,
     drawer: false,
+    authScreen: 'login',
     snackbar: {
       visible: false,
       text: null,
@@ -21,11 +22,14 @@ export default new Vuex.Store({
     setCredentials(state, credentials) {
       state.credentials = credentials
     },
+    setAuthDialog(state, authDialog) {
+      state.authDialog = authDialog
+    },
     setDrawer(state, drawer) {
       state.drawer = drawer
     },
-    setLoginDialog(state, loginDialog) {
-      state.loginDialog = loginDialog
+    setAuthScreen(state, authScreen) {
+      state.authScreen = authScreen
     },
     showSnackbar(state, payload) {
       state.snackbar.text = payload.text
