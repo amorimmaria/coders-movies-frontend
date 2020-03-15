@@ -10,5 +10,6 @@
 .content {
   height: 100vh;
   padding: 20px;
+  background-color: white;
 }
 </style>

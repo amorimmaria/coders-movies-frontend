@@ -44,27 +44,44 @@
 </template>
 
 <script>
+import axios from 'axios'
+import { mapState } from 'vuex'
+
 export default {
   data() {
     return {
       modes: ['multi', 'single', 'range'],
-      fields: ['selected', 'isActive', 'age', 'first_name', 'last_name'],
-      items: [
-        {
-          isActive: true,
-          age: 40,
-          first_name: 'Dickerson',
-          last_name: 'Macdonald',
-        },
-        { isActive: false, age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-        { isActive: false, age: 89, first_name: 'Geneva', last_name: 'Wilson' },
-        { isActive: true, age: 38, first_name: 'Jami', last_name: 'Carney' },
-      ],
+      fields: ['selected', 'name', 'email'],
+      items: [],
       selectMode: 'multi',
       selected: [],
     }
   },
+  computed: mapState(['drawer', 'credentials']),
+  created() {
+    this.getUsers()
+  },
   methods: {
+    async getUsers() {
+      if (!this.credentials.token) return
+
+      const token = this.credentials.token
+
+      const config = {
+        headers: { Authorization: `bearer ${token}` },
+      }
+
+      try {
+        const response = await axios(
+          'http://localhost:3000/admusers/list-users?page=1',
+          config
+        )
+
+        this.items = [...response.data]
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    },
     onRowSelected(items) {
       this.selected = items
     },
