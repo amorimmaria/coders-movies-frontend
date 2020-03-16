@@ -9,7 +9,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="user.name"
+                v-model.trim="user.name"
                 label="Nome Completo"
                 required
                 :counter="50"
@@ -20,7 +20,7 @@
           <v-row>
             <v-col cols="6">
               <v-text-field
-                v-model="user.username"
+                v-model.trim="user.username"
                 label="Username"
                 required
                 :counter="20"
@@ -40,7 +40,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="user.email"
+                v-model.trim="user.email"
                 label="E-mail"
                 required
                 :rules="emailRules"
@@ -50,7 +50,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="user.password"
+                v-model.trim="user.password"
                 label="Senha"
                 required
                 :type="showPassword ? 'text' : 'password'"
@@ -63,7 +63,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="user.confirmPassword"
+                v-model.trim="user.confirmPassword"
                 label="Repetir senha"
                 required
                 :type="showCPassword ? 'text' : 'password'"

@@ -44,14 +44,14 @@
             credentials.user.user_type === 'admin'
         "
         link
-        to="adm-options"
+        to="/users/list"
       >
         <v-list-item-action>
           <v-icon>mdi-cog</v-icon>
         </v-list-item-action>
         <v-list-item-content>
           <v-list-item-title>
-            Opções de Administrador
+            Usuários
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

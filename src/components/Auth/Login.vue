@@ -9,7 +9,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="user.email"
+                v-model.trim="user.email"
                 label="E-mail"
                 required
               ></v-text-field>
@@ -18,7 +18,7 @@
           <v-row>
             <v-col cols="12">
               <v-text-field
-                v-model="user.password"
+                v-model.trim="user.password"
                 label="Senha"
                 required
                 :type="showPassword ? 'text' : 'password'"

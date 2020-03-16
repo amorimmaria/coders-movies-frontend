@@ -18,6 +18,19 @@ export default new Vuex.Store({
       icon: '',
     },
   },
+  getters: {
+    getAuth(state) {
+      if (!state.credentials || !state.credentials.token) return false
+
+      const token = state.credentials.token
+
+      const config = {
+        headers: { Authorization: `bearer ${token}` },
+      }
+
+      return config
+    },
+  },
   mutations: {
     setCredentials(state, credentials) {
       state.credentials = credentials
