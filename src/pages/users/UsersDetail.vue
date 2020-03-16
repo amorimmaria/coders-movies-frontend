@@ -4,14 +4,21 @@
       <b-tbody>
         <b-tr>
           <b-th rowspan="3" class="text-center">Dados de {{ user.name }}</b-th>
-          <b-th stacked-heading="City" class="text-left">Antwerp</b-th>
-          <b-td stacked-heading="Clothes: Trousers">56</b-td>
-          <b-td stacked-heading="Clothes: Skirts">22</b-td>
-          <b-td stacked-heading="Clothes: Dresses">43</b-td>
-          <b-td stacked-heading="Accessories: Bracelets" variant="success"
-            >72</b-td
+          <b-th stacked-heading="Nome">{{ user.name }}</b-th>
+          <b-td stacked-heading="E-mail">{{ user.email }}</b-td>
+          <b-td stacked-heading="Username">{{ user.username }}</b-td>
+          <b-td stacked-heading="Data de Nascimento">{{
+            birthDateFormatted
+          }}</b-td>
+          <b-td
+            stacked-heading="Usuário Ativo"
+            :variant="user.is_active ? 'success' : 'danger'"
+            >{{ user.is_active ? 'Sim' : 'Não' }}</b-td
           >
-          <b-td stacked-heading="Accessories: Rings">23</b-td>
+          <b-td stacked-heading="Tipo de Usuário">{{ user.user_type }}</b-td>
+          <b-td stacked-heading="Usuário criado em">{{
+            createdAtFormatted
+          }}</b-td>
         </b-tr>
       </b-tbody>
     </b-table-simple>
@@ -20,12 +27,25 @@
 <script>
 import { mapMutations } from 'vuex'
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
   props: { id: { type: Number, default: 0 } },
   data: () => ({
     user: {},
   }),
+  computed: {
+    birthDateFormatted() {
+      return moment(this.user.birth_date)
+        .locale('pt-br')
+        .format('L')
+    },
+    createdAtFormatted() {
+      return moment(this.user.created_at)
+        .locale('pt-br')
+        .format('LLL')
+    },
+  },
   created() {
     this.getUser()
   },
@@ -42,9 +62,7 @@ export default {
 
         this.user = response.data
 
-        this.user.user_type === 'admin'
-          ? (this.isAdmin = true)
-          : (this.isAdmin = false)
+        console.log(this.user)
       } catch (err) {
         this.showSnackbar({
           text: err.response.data.error,
