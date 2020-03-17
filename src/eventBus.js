@@ -13,5 +13,11 @@ export default new Vue({
     onUserListNotified(callback) {
       this.$on('onUserListNotified', callback)
     },
+    notifySearch(search) {
+      this.$emit('onSearchListener', search)
+    },
+    onSearchListener(callback) {
+      this.$on('onSearchListener', callback)
+    },
   },
 })

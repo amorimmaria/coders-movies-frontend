@@ -39,38 +39,16 @@
           <v-text-field v-model.trim="user.email" label="E-mail" required :rules="emailRules" />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
-            v-model.trim="user.password"
-            label="Senha"
-            required
-            :type="showPassword ? 'text' : 'password'"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
-            @click:append="showPassword = !showPassword"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
-            v-model.trim="user.confirmPassword"
-            label="Repetir senha"
-            required
-            :type="showCPassword ? 'text' : 'password'"
-            :append-icon="showCPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
-            @click:append="showCPassword = !showCPassword"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-checkbox v-model="isAdmin" label="Usuário administrador?" required />
-        </v-col>
-      </v-row>
-      <v-btn color="#55aedf" class="float-right" @click="create()">Cadastrar</v-btn>
+      <v-btn color="#55aedf" class="float-right" @click="update()">Editar</v-btn>
+      <v-btn
+        color="warning"
+        dark
+        class="float-right mr-2"
+        @click="$router.push({path: '/user/changepass'})"
+      >
+        Alterar senha
+        <v-icon right dark>mdi-lock</v-icon>
+      </v-btn>
     </v-form>
   </div>
 </template>
@@ -99,37 +77,21 @@ export default {
       v => !!v || 'E-mail é obrigatório',
       v => /.+@.+\..+/.test(v) || 'E-mail não válido',
     ],
-    passwordRules: [
-      v => !!v || 'Senha é obrigatório',
-      v => (v && v.length >= 6) || 'Senha deve possuir pelo menos 6 caracteres',
-    ],
-    showPassword: false,
-    showCPassword: false,
-    isAdmin: false,
   }),
+  created() {
+    this.getUser()
+  },
   methods: {
     ...mapMutations(['showSnackbar']),
-    async create() {
-      if (!this.$refs.form.validate()) return
-      if (!this.checkPasswords()) return
+    async getUser() {
+      const auth = this.$store.getters.getAuth
 
       try {
-        const auth = this.$store.getters.getAuth
+        const response = await axios(`http://localhost:3333/users/me`, auth)
 
-        this.user.is_active = true
+        const { name, email, birth_date, username } = response.data
 
-        this.isAdmin
-          ? (this.user.user_type = 'admin')
-          : (this.user.user_type = 'common')
-
-        await axios.post('http://localhost:3333/admusers', this.user, auth)
-
-        this.showSnackbar({
-          text: 'Cadastro realizado com sucesso!',
-          color: 'success',
-        })
-
-        this.$router.push({ path: '/users/list' })
+        this.user = { name, email, birth_date, username }
       } catch (err) {
         this.showSnackbar({
           text: err.response.data.error,
@@ -137,17 +99,26 @@ export default {
         })
       }
     },
-    checkPasswords() {
-      if (this.user.password !== this.user.confirmPassword) {
+    async update() {
+      if (!this.$refs.form.validate()) return
+
+      try {
+        const auth = this.$store.getters.getAuth
+
+        await axios.put(`http://localhost:3333/users`, this.user, auth)
+
         this.showSnackbar({
-          text: 'Senhas não coincidem',
-          color: 'error',
+          text: 'Usuário editado com sucesso!',
+          color: 'success',
         })
 
-        return false
+        this.$router.push({ path: '/user' })
+      } catch (err) {
+        this.showSnackbar({
+          text: err.response.data.error,
+          color: 'error',
+        })
       }
-
-      return true
     },
     validate() {
       this.$refs.form.validate()

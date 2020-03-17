@@ -1,10 +1,6 @@
 <template>
   <b-col md="4" sm="12">
-    <router-link
-      v-if="selected.length === 0"
-      to="/users/create"
-      class="pull-right"
-    >
+    <router-link v-if="selected.length === 0" to="/users/create">
       <b-button class="bt-secondary-global-lg">
         <i class="fa fa-plus-circle mr-2"></i>Cadastrar
       </b-button>
@@ -47,7 +43,7 @@ export default {
 
       try {
         this.selected.forEach(async item => {
-          await axios.delete(`http://localhost:3000/admusers/${item.id}`, auth)
+          await axios.delete(`http://localhost:3333/admusers/${item.id}`, auth)
         })
 
         this.showSnackbar({

@@ -8,11 +8,7 @@
         <v-form ref="form" v-model="valid" lazy-validation>
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                v-model.trim="user.email"
-                label="E-mail"
-                required
-              ></v-text-field>
+              <v-text-field v-model.trim="user.email" label="E-mail" required />
             </v-col>
           </v-row>
           <v-row>
@@ -24,22 +20,21 @@
                 :type="showPassword ? 'text' : 'password'"
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 @click:append="showPassword = !showPassword"
-              ></v-text-field>
+              />
             </v-col>
           </v-row>
         </v-form>
       </v-container>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn color="blue darken-1" text @click="closeDialog()">Cancelar</v-btn>
 
       <v-btn
         color="blue darken-1"
         text
         @click="$store.commit('setAuthScreen', 'register')"
-        >Criar conta</v-btn
-      >
+      >Criar conta</v-btn>
 
       <v-btn color="primary" @click="login()">Entrar</v-btn>
     </v-card-actions>
@@ -65,7 +60,7 @@ export default {
     async login() {
       try {
         const response = await axios.post(
-          'http://localhost:3000/sessions',
+          'http://localhost:3333/sessions',
           this.user
         )
 
@@ -80,6 +75,8 @@ export default {
           color: 'success',
         })
 
+        this.setInitialState()
+
         this.setAuthDialog(false)
       } catch (err) {
         this.showSnackbar({
@@ -87,6 +84,9 @@ export default {
           color: 'error',
         })
       }
+    },
+    setInitialState() {
+      this.user = {}
     },
   },
 }

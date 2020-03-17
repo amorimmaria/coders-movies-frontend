@@ -30,6 +30,18 @@ export default new Vuex.Store({
 
       return config
     },
+    getPermissionAdm(state) {
+      if (
+        !state.credentials ||
+        !state.credentials.user ||
+        state.credentials.user.user_type !== 'admin' ||
+        !state.credentials.user.is_active
+      ) {
+        return false
+      }
+
+      return true
+    },
   },
   mutations: {
     setCredentials(state, credentials) {

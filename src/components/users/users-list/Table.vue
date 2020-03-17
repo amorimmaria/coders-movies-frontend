@@ -24,46 +24,34 @@
       </template>
 
       <template v-slot:cell(actions)="row">
-        <router-link
-          :to="
-            `
-        ${row.item.id}/detail`
-          "
-          ><b-button
-            size="sm"
-            class="mr-1"
-            @click="info(row.item, row.index, $event.target)"
-          >
+        <router-link :to="`${row.item.id}/detail`">
+          <b-button size="sm" class="mr-1">
             <v-icon small>mdi-eye</v-icon>
           </b-button>
         </router-link>
 
-        <router-link
-          :to="
-            `
-        ${row.item.id}/update`
-          "
-          ><b-button size="sm" class="mr-1">
+        <router-link :to="`${row.item.id}/update`">
+          <b-button size="sm" class="mr-1">
             <v-icon small>mdi-pencil</v-icon>
-          </b-button></router-link
-        >
+          </b-button>
+        </router-link>
 
         <b-button size="sm" class="mr-1" @click="deleteUser(row.item)">
           <v-icon small>mdi-account-cancel</v-icon>
         </b-button>
       </template>
     </b-table>
-    <v-btn icon color="#55aedf" class="mr-2" small @click="selectAllRows()"
-      ><v-icon>mdi-select-all</v-icon></v-btn
-    >
-    <v-btn icon color="#55aedf" small @click="clearSelected()"
-      ><v-icon>mdi-select-off</v-icon></v-btn
-    >
+    <v-btn icon color="#55aedf" class="mr-2" small @click="selectAllRows()">
+      <v-icon>mdi-select-all</v-icon>
+    </v-btn>
+    <v-btn icon color="#55aedf" small @click="clearSelected()">
+      <v-icon>mdi-select-off</v-icon>
+    </v-btn>
   </div>
 </template>
 <script>
 import axios from 'axios'
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 import eventBus from '@/eventBus'
 
 export default {
@@ -77,13 +65,19 @@ export default {
       { key: 'actions', label: 'Ações' },
     ],
     items: [],
+    page: 1,
+    search: '',
     selected: [],
   }),
-  computed: mapState(['credentials']),
   created() {
     this.getUsers()
 
     eventBus.onUserListNotified(() => {
+      this.getUsers()
+    })
+
+    eventBus.onSearchListener(search => {
+      this.search = search
       this.getUsers()
     })
   },
@@ -94,7 +88,7 @@ export default {
 
       try {
         const response = await axios(
-          'http://localhost:3000/admusers/list-users?page=1',
+          `http://localhost:3333/admusers/list-users?page=${this.page}&user=${this.search}`,
           auth
         )
 
@@ -110,7 +104,7 @@ export default {
       const auth = this.$store.getters.getAuth
 
       try {
-        await axios.delete(`http://localhost:3000/admusers/${item.id}`, auth)
+        await axios.delete(`http://localhost:3333/admusers/${item.id}`, auth)
 
         this.showSnackbar({
           text: `Usuário ${item.username} foi bloqueado com sucesso`,

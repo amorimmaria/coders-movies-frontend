@@ -8,6 +8,11 @@ import UsersList from '../pages/users/UsersList'
 import UsersDetail from '../pages/users/UsersDetail'
 import UsersCreate from '../pages/users/UsersCreate'
 import UsersUpdate from '../pages/users/UsersUpdate'
+import UsersChangePass from '../pages/users/UsersChangePass'
+
+import User from '../pages/user/User'
+import UserUpdate from '../pages/user/UserUpdate'
+import UserChangePass from '../pages/user/UserChangePass'
 
 Vue.use(VueRouter)
 
@@ -26,8 +31,24 @@ const routes = [
       { path: 'list', component: UsersList },
       { path: 'create', component: UsersCreate },
       { path: ':id/update', component: UsersUpdate },
+      { path: ':id/changepass', component: UsersChangePass },
       { path: ':id/detail', component: UsersDetail },
     ],
+  },
+  {
+    name: 'user',
+    path: '/user',
+    component: User,
+  },
+  {
+    name: 'user_update',
+    path: '/user/update',
+    component: UserUpdate,
+  },
+  {
+    name: 'user_change_pass',
+    path: '/user/changepass',
+    component: UserChangePass,
   },
 ]
 

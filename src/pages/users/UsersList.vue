@@ -1,14 +1,9 @@
 <template>
   <div>
-    <Permission
-      v-if="
-        !credentials ||
-          !credentials.user ||
-          credentials.user.user_type !== 'admin'
-      "
-    />
+    <Permission v-if="!$store.getters.getPermissionAdm" />
+
     <div v-else>
-      <PageTitle image="usuarios" main="Usuários" sub="" />
+      <PageTitle image="usuarios" main="Usuários" sub />
 
       <b-row>
         <Search />

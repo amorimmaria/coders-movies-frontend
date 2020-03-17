@@ -6,37 +6,14 @@
       <v-row>
         <v-col cols="12">
           <v-text-field
-            v-model.trim="user.name"
-            label="Nome Completo"
+            v-model.trim="user.oldPassword"
+            label="Senha Antiga"
             required
-            :counter="50"
-            :rules="nameRules"
+            :type="showOldPassword ? 'text' : 'password'"
+            :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            :rules="passwordRules"
+            @click:append="showOldPassword = !showOldPassword"
           />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="6">
-          <v-text-field
-            v-model.trim="user.username"
-            label="Username"
-            required
-            :counter="20"
-            :rules="usernameRules"
-          />
-        </v-col>
-        <v-col cols="6">
-          <v-text-field
-            v-model="user.birth_date"
-            label="Data de Nascimento"
-            type="date"
-            required
-            :rules="birthDateRules"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-text-field v-model.trim="user.email" label="E-mail" required :rules="emailRules" />
         </v-col>
       </v-row>
       <v-row>
@@ -65,12 +42,7 @@
           />
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-checkbox v-model="isAdmin" label="Usuário administrador?" required />
-        </v-col>
-      </v-row>
-      <v-btn color="#55aedf" class="float-right" @click="create()">Cadastrar</v-btn>
+      <v-btn color="#55aedf" class="float-right" @click="update()">Salvar</v-btn>
     </v-form>
   </div>
 </template>
@@ -83,49 +55,35 @@ import axios from 'axios'
 
 export default {
   components: { Permission },
+  props: { id: { type: Number, default: 0 } },
   data: () => ({
     valid: true,
     user: {},
-    nameRules: [
-      v => !!v || 'Nome é obrigatório',
-      v => (v && v.length <= 50) || 'Nome deve possuir até 50 caracteres',
-    ],
-    usernameRules: [
-      v => !!v || 'Username é obrigatório',
-      v => (v && v.length <= 20) || 'Username deve possuir até 20 caracteres',
-    ],
-    birthDateRules: [v => !!v || 'Data de nascimento é obrigatório'],
-    emailRules: [
-      v => !!v || 'E-mail é obrigatório',
-      v => /.+@.+\..+/.test(v) || 'E-mail não válido',
-    ],
     passwordRules: [
       v => !!v || 'Senha é obrigatório',
       v => (v && v.length >= 6) || 'Senha deve possuir pelo menos 6 caracteres',
     ],
     showPassword: false,
     showCPassword: false,
-    isAdmin: false,
+    showOldPassword: false,
   }),
   methods: {
     ...mapMutations(['showSnackbar']),
-    async create() {
+    async update() {
       if (!this.$refs.form.validate()) return
       if (!this.checkPasswords()) return
 
       try {
         const auth = this.$store.getters.getAuth
 
-        this.user.is_active = true
-
-        this.isAdmin
-          ? (this.user.user_type = 'admin')
-          : (this.user.user_type = 'common')
-
-        await axios.post('http://localhost:3333/admusers', this.user, auth)
+        await axios.put(
+          `http://localhost:3333/admusers/${this.$route.params.id}`,
+          this.user,
+          auth
+        )
 
         this.showSnackbar({
-          text: 'Cadastro realizado com sucesso!',
+          text: 'Usuário editado com sucesso!',
           color: 'success',
         })
 

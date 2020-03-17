@@ -1,13 +1,13 @@
 <template>
   <v-navigation-drawer :value="drawer" app clipped color="#232323">
     <v-list dense>
-      <v-list-item @click="activeLogin()">
+      <v-list-item @click="accessLoginOrDetails()">
         <v-list-item-avatar>
           <img
             :src="
               `https://d1bvpoagx8hqbg.cloudfront.net/259/eb0a9acaa2c314784949cc8772ca01b3.jpg`
             "
-            alt=""
+            alt
           />
         </v-list-item-avatar>
         <v-list-item-title
@@ -19,40 +19,23 @@
         />
       </v-list-item>
 
-      <v-divider></v-divider>
+      <v-divider />
 
-      <v-list-item
-        v-for="item in itemsMenu"
-        :key="item.text"
-        link
-        :to="item.to"
-      >
+      <v-list-item v-for="item in itemsMenu" :key="item.text" link :to="item.to">
         <v-list-item-action>
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>
-            {{ item.text }}
-          </v-list-item-title>
+          <v-list-item-title>{{ item.text }}</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item
-        v-if="
-          credentials &&
-            credentials.user &&
-            credentials.user.user_type === 'admin'
-        "
-        link
-        to="/users/list"
-      >
+      <v-list-item v-if="$store.getters.getPermissionAdm" link to="/users/list">
         <v-list-item-action>
           <v-icon>mdi-cog</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>
-            Usuários
-          </v-list-item-title>
+          <v-list-item-title>Usuários</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
     </v-list>
@@ -83,8 +66,16 @@ export default {
   }),
   computed: mapState(['drawer', 'credentials']),
   methods: {
-    activeLogin() {
-      this.$store.commit('setAuthDialog', true)
+    accessLoginOrDetails() {
+      if (
+        this.credentials &&
+        this.credentials.user &&
+        this.credentials.user.username
+      ) {
+        this.$router.push({ path: '/user' })
+      } else {
+        this.$store.commit('setAuthDialog', true)
+      }
     },
     logout() {
       this.$store.commit('setCredentials', null)

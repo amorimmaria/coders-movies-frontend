@@ -14,7 +14,7 @@
                 required
                 :counter="50"
                 :rules="nameRules"
-              ></v-text-field>
+              />
             </v-col>
           </v-row>
           <v-row>
@@ -25,7 +25,7 @@
                 required
                 :counter="20"
                 :rules="usernameRules"
-              ></v-text-field>
+              />
             </v-col>
             <v-col cols="6">
               <v-text-field
@@ -34,17 +34,12 @@
                 type="date"
                 required
                 :rules="birthDateRules"
-              ></v-text-field>
+              />
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12">
-              <v-text-field
-                v-model.trim="user.email"
-                label="E-mail"
-                required
-                :rules="emailRules"
-              ></v-text-field>
+              <v-text-field v-model.trim="user.email" label="E-mail" required :rules="emailRules" />
             </v-col>
           </v-row>
           <v-row>
@@ -57,7 +52,7 @@
                 :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="passwordRules"
                 @click:append="showPassword = !showPassword"
-              ></v-text-field>
+              />
             </v-col>
           </v-row>
           <v-row>
@@ -70,22 +65,21 @@
                 :append-icon="showCPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :rules="passwordRules"
                 @click:append="showCPassword = !showCPassword"
-              ></v-text-field>
+              />
             </v-col>
           </v-row>
         </v-form>
       </v-container>
     </v-card-text>
     <v-card-actions>
-      <v-spacer></v-spacer>
+      <v-spacer />
       <v-btn color="blue darken-1" text @click="closeDialog()">Cancelar</v-btn>
 
       <v-btn
         color="blue darken-1"
         text
         @click="$store.commit('setAuthScreen', 'login')"
-        >Faça login em vez disso</v-btn
-      >
+      >Faça login em vez disso</v-btn>
 
       <v-btn color="primary" @click="register()">Registrar</v-btn>
     </v-card-actions>
@@ -132,16 +126,18 @@ export default {
       if (!this.checkPasswords()) return
 
       try {
-        await axios.post('http://localhost:3000/users', this.user)
+        await axios.post('http://localhost:3333/users', this.user)
 
         this.showSnackbar({
           text: 'Cadastro realizado com sucesso!',
           color: 'success',
         })
 
-        this.setAuthDialog(false)
-
         this.login()
+
+        this.setInitialState()
+
+        this.setAuthDialog(false)
       } catch (err) {
         this.showSnackbar({
           text: err.response.data.error,
@@ -163,7 +159,7 @@ export default {
     },
     async login() {
       const response = await axios.post(
-        'http://localhost:3000/sessions',
+        'http://localhost:3333/sessions',
         this.user
       )
 
@@ -172,6 +168,10 @@ export default {
       this.setCredentials(credentials)
 
       localStorage.setItem('credentials', JSON.stringify(credentials))
+    },
+    setInitialState() {
+      this.user = {}
+      this.$store.commit('setAuthScreen', 'login')
     },
   },
 }

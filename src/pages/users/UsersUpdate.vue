@@ -1,12 +1,6 @@
 <template>
   <div>
-    <Permission
-      v-if="
-        !credentials ||
-          !credentials.user ||
-          credentials.user.user_type !== 'admin'
-      "
-    />
+    <Permission v-if="!$store.getters.getPermissionAdm" />
 
     <v-form v-else ref="form" v-model="valid" lazy-validation>
       <v-row>
@@ -17,7 +11,7 @@
             required
             :counter="50"
             :rules="nameRules"
-          ></v-text-field>
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -28,7 +22,7 @@
             required
             :counter="20"
             :rules="usernameRules"
-          ></v-text-field>
+          />
         </v-col>
         <v-col cols="6">
           <v-text-field
@@ -37,45 +31,39 @@
             type="date"
             required
             :rules="birthDateRules"
-          ></v-text-field>
+          />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-text-field
-            v-model.trim="user.email"
-            label="E-mail"
-            required
-            :rules="emailRules"
-          ></v-text-field>
+          <v-text-field v-model.trim="user.email" label="E-mail" required :rules="emailRules" />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-checkbox
-            v-model="isAdmin"
-            label="Usuário administrador?"
-            required
-          ></v-checkbox>
+          <v-checkbox v-model="isAdmin" label="Usuário administrador?" required />
         </v-col>
       </v-row>
       <v-row>
         <v-col cols="12">
-          <v-checkbox
-            v-model="user.is_active"
-            label="Usuário ativo?"
-            required
-          ></v-checkbox>
+          <v-checkbox v-model="user.is_active" label="Usuário ativo?" required />
         </v-col>
       </v-row>
-      <v-btn color="#55aedf" class="float-right" @click="update()"
-        >Editar</v-btn
+      <v-btn color="#55aedf" class="float-right" @click="update()">Editar</v-btn>
+      <v-btn
+        color="warning"
+        dark
+        class="float-right mr-2"
+        @click="$router.push({path: `/users/${$route.params.id}/changepass`})"
       >
+        Alterar senha
+        <v-icon right dark>mdi-lock</v-icon>
+      </v-btn>
     </v-form>
   </div>
 </template>
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapMutations } from 'vuex'
 
 import Permission from '../../components/common/Permission'
 
@@ -102,7 +90,6 @@ export default {
     ],
     isAdmin: false,
   }),
-  computed: mapState(['credentials']),
   created() {
     this.getUser()
   },
@@ -113,7 +100,7 @@ export default {
 
       try {
         const response = await axios(
-          `http://localhost:3000/admusers/${this.$route.params.id}`,
+          `http://localhost:3333/admusers/${this.$route.params.id}`,
           auth
         )
 
@@ -140,7 +127,7 @@ export default {
           : (this.user.user_type = 'common')
 
         await axios.put(
-          `http://localhost:3000/admusers/${this.$route.params.id}`,
+          `http://localhost:3333/admusers/${this.$route.params.id}`,
           this.user,
           auth
         )
@@ -150,7 +137,7 @@ export default {
           color: 'success',
         })
 
-        this.$router.back()
+        this.$router.push({ path: '/users/list' })
       } catch (err) {
         this.showSnackbar({
           text: err.response.data.error,
