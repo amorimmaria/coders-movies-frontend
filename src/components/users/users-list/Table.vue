@@ -2,6 +2,7 @@
   <div>
     <b-table
       ref="selectableTable"
+      class="table-users"
       selectable
       select-mode="range"
       :items="items"
@@ -40,6 +41,11 @@
           <v-icon small>mdi-account-cancel</v-icon>
         </b-button>
       </template>
+
+      <template v-slot:cell(ativo)="row">
+        <v-icon v-if="row.item.is_active" color="success">mdi-circle</v-icon>
+        <v-icon v-else color="error">mdi-circle</v-icon>
+      </template>
     </b-table>
     <p class="text-pagination">{{ rows }} resultados</p>
     <b-pagination
@@ -66,10 +72,9 @@ export default {
   data: () => ({
     fields: [
       { key: 'selected', label: 'Selecionado' },
-      { key: 'name', label: 'Nome', sortable: true },
       { key: 'username', label: 'Username', sortable: true },
       { key: 'user_type', label: 'Tipo de Usuário', sortable: true },
-      { key: 'is_active', label: 'Ativo', sortable: true },
+      { key: 'ativo', label: 'Ativo', sortable: true },
       { key: 'actions', label: 'Ações' },
     ],
     items: [],
@@ -165,6 +170,10 @@ export default {
 </script>
 
 <style>
+.table-users tr td:last-child {
+  width: 140px !important;
+}
+
 .pagination {
   display: flex;
   align-items: center;

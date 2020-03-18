@@ -3,7 +3,7 @@
     <Permission v-if="!$store.getters.getPermissionAdm" />
 
     <div v-else>
-      <PageTitle image="usuarios" main="Usuários" sub />
+      <PageTitle icon="mdi-account-group" main="Usuários" sub />
 
       <b-row>
         <Search />

@@ -1,30 +1,20 @@
 <template>
   <div class="page-title">
-    <div style="display:flex">
-      <img
-        v-if="auxiliar !== 'fornecedor'"
-        :src="loadImg()"
-        width="41"
-        height="41"
-        class="mt-1 mr-2"
-      />
-      <img
-        v-if="auxiliar === 'fornecedor'"
-        :src="loadImg()"
-        width="41"
-        height="41"
-        class="mb-1 mr-2"
-      />
+    <div class="main-info">
+      <v-icon size="40" class="mr-2">{{ icon }}</v-icon>
       <h1>{{ main }}</h1>
     </div>
     <h2>{{ sub }}</h2>
-    <hr />
   </div>
 </template>
 
 <script>
 export default {
-  props: ['image', 'main', 'sub'],
+  props: {
+    icon: { type: String, default: '' },
+    main: { type: String, default: '' },
+    sub: { type: String, default: '' },
+  },
   data() {
     return {
       auxiliar: '',
@@ -55,5 +45,10 @@ export default {
   color: #777;
   margin-top: 5px;
   font-size: 1.3rem;
+}
+
+.main-info {
+  display: flex;
+  align-items: center;
 }
 </style>
