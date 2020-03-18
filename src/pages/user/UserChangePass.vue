@@ -81,7 +81,7 @@ export default {
         await axios.put(`http://localhost:3333/users`, this.user, auth)
 
         this.showSnackbar({
-          text: 'Usuário editado com sucesso!',
+          text: 'Operação realizada com sucesso!',
           color: 'success',
         })
 

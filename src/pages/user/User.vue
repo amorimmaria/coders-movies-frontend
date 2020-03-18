@@ -34,7 +34,6 @@ import Permission from '../../components/common/Permission'
 
 export default {
   components: { Permission },
-  props: { id: { type: Number, default: 0 } },
   data: () => ({
     user: {},
   }),
@@ -57,8 +56,6 @@ export default {
   methods: {
     ...mapMutations(['showSnackbar']),
     async getUser() {
-      this.user = {}
-
       const auth = this.$store.getters.getAuth
 
       try {

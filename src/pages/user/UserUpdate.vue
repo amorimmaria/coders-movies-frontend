@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Permission v-if="!$store.getters.getPermissionAdm" />
+    <Permission v-if="!credentials" />
 
     <v-form v-else ref="form" v-model="valid" lazy-validation>
       <v-row>
@@ -53,7 +53,7 @@
   </div>
 </template>
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
 
 import Permission from '../../components/common/Permission'
 
@@ -78,6 +78,9 @@ export default {
       v => /.+@.+\..+/.test(v) || 'E-mail não válido',
     ],
   }),
+  computed: {
+    ...mapState(['credentials']),
+  },
   created() {
     this.getUser()
   },
