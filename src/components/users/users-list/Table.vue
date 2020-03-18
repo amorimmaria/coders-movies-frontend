@@ -41,6 +41,14 @@
         </b-button>
       </template>
     </b-table>
+    <p class="text-pagination">{{ rows }} resultados</p>
+    <b-pagination
+      v-model="currentPage"
+      class="pagination"
+      :total-rows="rows"
+      per-page="20"
+      @input="getUsers()"
+    />
     <v-btn icon color="#55aedf" class="mr-2" small @click="selectAllRows()">
       <v-icon>mdi-select-all</v-icon>
     </v-btn>
@@ -65,20 +73,22 @@ export default {
       { key: 'actions', label: 'Ações' },
     ],
     items: [],
-    page: 1,
+    rows: 1,
+    currentPage: 1,
     search: '',
     selected: [],
   }),
   created() {
-    this.getUsers()
+    this.getList()
 
     eventBus.onUserListNotified(() => {
-      this.getUsers()
+      this.getList()
     })
 
     eventBus.onSearchListener(search => {
+      this.currentPage = 1
       this.search = search
-      this.getUsers()
+      this.getList()
     })
   },
   methods: {
@@ -88,11 +98,28 @@ export default {
 
       try {
         const response = await axios(
-          `http://localhost:3333/admusers/list-users?page=${this.page}&user=${this.search}`,
+          `http://localhost:3333/admusers/list-users?page=${this.currentPage}&user=${this.search}`,
           auth
         )
 
         this.items = [...response.data]
+      } catch (err) {
+        this.showSnackbar({
+          text: err.response.data.error,
+          color: 'error',
+        })
+      }
+    },
+    async getPagesAmount() {
+      const auth = this.$store.getters.getAuth
+
+      try {
+        const response = await axios(
+          `http://localhost:3333/admusers/pages-amount?user=${this.search}`,
+          auth
+        )
+
+        this.rows = response.data
       } catch (err) {
         this.showSnackbar({
           text: err.response.data.error,
@@ -119,6 +146,10 @@ export default {
         })
       }
     },
+    getList() {
+      this.getUsers()
+      this.getPagesAmount()
+    },
     onRowSelected(items) {
       this.selected = items
       eventBus.setSelectedItems(this.selected)
@@ -132,3 +163,29 @@ export default {
   },
 }
 </script>
+
+<style>
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 !important;
+}
+
+.text-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination .page-item.active .page-link {
+  color: white;
+  background-color: #454d55;
+  border-color: black;
+}
+
+.pagination .page-link {
+  color: #454d55;
+  background-color: white;
+}
+</style>

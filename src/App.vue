@@ -31,3 +31,14 @@ export default {
   },
 }
 </script>
+
+<style>
+/*
+
+Se quiser alterar a cor de fundo
+#inspire {
+  background-color: red;
+}
+
+*/
+</style>

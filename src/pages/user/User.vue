@@ -57,6 +57,8 @@ export default {
   methods: {
     ...mapMutations(['showSnackbar']),
     async getUser() {
+      this.user = {}
+
       const auth = this.$store.getters.getAuth
 
       try {

@@ -6,19 +6,6 @@
       <v-row>
         <v-col cols="12">
           <v-text-field
-            v-model.trim="user.oldPassword"
-            label="Senha Antiga"
-            required
-            :type="showOldPassword ? 'text' : 'password'"
-            :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            :rules="passwordRules"
-            @click:append="showOldPassword = !showOldPassword"
-          />
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-text-field
             v-model.trim="user.password"
             label="Senha"
             required
@@ -65,7 +52,6 @@ export default {
     ],
     showPassword: false,
     showCPassword: false,
-    showOldPassword: false,
   }),
   methods: {
     ...mapMutations(['showSnackbar']),

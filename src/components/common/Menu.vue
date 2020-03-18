@@ -72,7 +72,7 @@ export default {
         this.credentials.user &&
         this.credentials.user.username
       ) {
-        this.$router.push({ path: '/user' })
+        this.$router.push({ name: 'user' }).catch(() => {})
       } else {
         this.$store.commit('setAuthDialog', true)
       }
