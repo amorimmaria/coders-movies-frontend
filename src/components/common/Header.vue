@@ -1,11 +1,13 @@
 <template>
   <v-app-bar app clipped-left color="#e31e1e" dense>
     <v-app-bar-nav-icon @click.stop="setDrawer()" />
-    <v-icon class="mx-4" large>
-      mdi-youtube
-    </v-icon>
+    <router-link to="/">
+      <v-icon class="mx-4" large>mdi-youtube</v-icon>
+    </router-link>
     <v-toolbar-title class="mr-12 align-center">
-      <span class="title">Youtube</span>
+      <router-link to="/" style="text-decoration:none !important; color: inherit !important">
+        <span class="title">Youtube</span>
+      </router-link>
     </v-toolbar-title>
     <v-spacer />
     <v-row align="center" style="max-width: 650px">

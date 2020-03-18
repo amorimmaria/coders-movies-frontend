@@ -15,24 +15,6 @@ export default {
     main: { type: String, default: '' },
     sub: { type: String, default: '' },
   },
-  data() {
-    return {
-      auxiliar: '',
-    }
-  },
-  mounted() {
-    this.getAuxiliarValue()
-  },
-  methods: {
-    loadImg() {
-      if (this.image === 'centro') {
-        console.log('centro')
-      }
-    },
-    getAuxiliarValue() {
-      this.auxiliar = this.image
-    },
-  },
 }
 </script>
 

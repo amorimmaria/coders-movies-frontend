@@ -1,3 +1,3 @@
 <template>
-  <p>Teste com Router</p>
+  <p>Futura página inicial</p>
 </template>
