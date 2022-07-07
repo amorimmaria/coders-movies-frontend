@@ -11,7 +11,7 @@
     "axios": "^0.19.2",
     "bootstrap-vue": "^2.1.0",
     "core-js": "^3.6.4",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
     "vuelidate": "^0.7.5",
